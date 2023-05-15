@@ -1,4 +1,4 @@
-﻿/*
+/*
 Created by Youssef Elashry to allow two-way communication between Python3 and Unity to send and receive strings
 
 Feel free to use this in your individual or commercial projects BUT make sure to reference me as: Two-way communication between Python 3 and Unity (C#) - Y. T. Elashry
@@ -10,18 +10,30 @@ Use under the Apache License 2.0
 Modified by: 
 Youssef Elashry 12/2020 (replaced obsolete functions and improved further - works with Python as well)
 Based on older work by Sandra Fang 2016 - Unity3D to MATLAB UDP communication - [url]http://msdn.microsoft.com/de-de/library/bb979228.aspx#ID0E3BAC[/url]
+
+Modified by:
+Andres Pinilla 05/2023
+University of Sydney
+Integrating with EoM
 */
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
+using TMPro;
+using ExciteOMeter;
+
 public class UdpSocket : MonoBehaviour
 {
+    
+    public TMP_Text rri;
+
     [HideInInspector] public bool isTxStarted = false;
 
     [SerializeField] string IP = "127.0.0.1"; // local host
@@ -35,15 +47,15 @@ public class UdpSocket : MonoBehaviour
     IPEndPoint remoteEndPoint;
     Thread receiveThread; // Receiving Thread
 
-    IEnumerator SendDataCoroutine() // DELETE THIS: Added to show sending data from Unity to Python via UDP
-    {
-        while (true)
-        {
-            SendData("Sent from Unity: " + i.ToString());
-            i++;
-            yield return new WaitForSeconds(1f);
-        }
-    }
+    // IEnumerator SendDataCoroutine() // DELETE THIS: Added to show sending data from Unity to Python via UDP
+    // {
+    //     while (true)
+    //     {
+    //         SendData("Sent from Unity: " + i.ToString());
+    //         i++;
+    //         yield return new WaitForSeconds(1f);
+    //     }
+    // }
 
     public void SendData(string message) // Use to send data to Python
     {
@@ -75,7 +87,10 @@ public class UdpSocket : MonoBehaviour
         // Initialize (seen in comments window)
         print("UDP Comms Initialised");
 
-        StartCoroutine(SendDataCoroutine()); // DELETE THIS: Added to show sending data from Unity to Python via UDP
+        // StartCoroutine(SendDataCoroutine()); // DELETE THIS: Added to show sending data from Unity to Python via UDP
+
+        // Subscribe to events
+        EoM_Events.OnDataReceived += ExciteOMeterDataReceived;
     }
 
     // Receive data, update packets received
@@ -115,6 +130,54 @@ public class UdpSocket : MonoBehaviour
             receiveThread.Abort();
 
         client.Close();
+    }
+
+    // Retrive EoM data
+    private void ExciteOMeterDataReceived(DataType type, float timestamp, float value)
+    {
+        ///// You can uncomment the line below to receive data only when 
+        ///// the Excite-O-Meter is recording data.
+        // if (!isCurrentlyRecording) return;
+
+        switch (type)
+        {
+            case DataType.NONE:
+                break;
+            // case DataType.HeartRate:
+            //     Debug.Log($"Received HR with timestamp {timestamp}, value {value}");
+            //     break;
+            case DataType.RRInterval:
+                Debug.Log($"Received RR-interval with timestamp {timestamp}, value {value}");
+                SendData(value.ToString());
+                rri.text = value.ToString();
+                break;
+            // case DataType.RawECG:
+            //     // Currently not available
+            //     break;
+            // case DataType.RawACC:
+            //     // Currently not available
+            //     break;
+            // case DataType.RMSSD:
+            //     rmssd.text = value.ToString();
+            //     Debug.Log($"Received calculated feature RMSSD with timestamp {timestamp}, value {value}");
+            //     break;
+            // case DataType.SDNN:
+            //     Debug.Log($"Received calculated feature SDNN with timestamp {timestamp}, value {value}");
+            //     break;
+            // case DataType.EOM:
+            //     break;
+            // case DataType.AutomaticMarkers:
+            //     // These events are captured by `EoM_Events.OnStringReceived`
+            //     break;
+            // case DataType.ManualMarkers:
+            //     // These events are captured by `EoM_Events.OnStringReceived`
+            //     break;
+            // case DataType.Screenshots:
+            //     Debug.Log("A new screenshot was generated in the recorded session");
+            //     break;
+            default:
+                break;
+        }
     }
 
 }

@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 150064789}
   - component: {fileID: 150064788}
   m_Layer: 0
-  m_Name: Counter
+  m_Name: UDPSocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd38170e4d0de4e10af5c94ce8f4a567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hr: {fileID: 1154384066}
+  rri: {fileID: 1154384066}
+  isTxStarted: 0
+  IP: 127.0.0.1
+  rxPort: 8000
+  txPort: 8001
 --- !u!4 &150064789
 Transform:
   m_ObjectHideFlags: 0
@@ -402,7 +406,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6657273736073664266, guid: efb01c729689ff940ad2d7bed4419099, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6657273736073664266, guid: efb01c729689ff940ad2d7bed4419099, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1066,53 +1070,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!1 &1775840615
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1775840617}
-  - component: {fileID: 1775840616}
-  m_Layer: 0
-  m_Name: UPD
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1775840616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775840615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a7bcc02e66ec4f3590d92d4c101ab55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTxStarted: 0
-  IP: 127.0.0.1
-  rxPort: 8000
-  txPort: 8001
---- !u!4 &1775840617
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775840615}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3861565, y: 1.855417, z: 0.37339303}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1904166338
 GameObject:
   m_ObjectHideFlags: 0

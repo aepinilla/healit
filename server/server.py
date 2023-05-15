@@ -11,18 +11,25 @@
 import UdpComms as U
 import time
 
+# from src.compute_excitement import compute_excitement
+
 # Create UDP socket to use for sending (and receiving)
 sock = U.UdpComms(udpIP="127.0.0.1", portTX=8000, portRX=8001, enableRX=True, suppressWarnings=True)
 
 i = 0
 
+rmssd_array = list()
 while True:
-    # sock.SendData('Sent from Python: ' + str(i)) # Send this string to other application
-    # i += 1
-
     data = sock.ReadReceivedData() # read data
 
+    # Receive data from Unity
     if data != None: # if NEW data has been received since last ReadReceivedData function call
         print(data) # print new received data
+        rmssd_array.append(data)
+
+    # Calculate baseline when sufficient data has been captured
+    if len(rmssd_array) > 2:
+        # baseline = compute_excitement(rmssd_array)
+        sock.SendData('Calibration phase is finished') # Send this string to Unity
 
     time.sleep(1)

@@ -1,7 +1,7 @@
 {
     "logSettings": {
         "sessionId": "SessionID",
-        "mainLogFolder": "/Users/apin9955/Documents/code/vr/sentui/Assets/../LogFiles_ExciteOMeter/",
+        "mainLogFolder": "/Users/apin9955/Documents/code/vr/sentui/environment/Assets/../LogFiles_ExciteOMeter/",
         "mainDebugFilename": "logDebug.txt",
         "sessionJsonFilename": "sessionData.json",
         "captureScreenshots": true,
